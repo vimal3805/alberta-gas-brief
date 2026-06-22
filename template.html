@@ -127,7 +127,7 @@
   <div class="header">
     <div class="label">Alberta Gas Market Intelligence</div>
     <h1>Morning Brief</h1>
-    <div class="subtitle">{{ date }} &nbsp;·&nbsp; Data: EIA, AESO, AER &nbsp;·&nbsp; Generated {{ generated_at }}</div>
+    <div class="subtitle">EIA data as of {{ date }} &nbsp;·&nbsp; Data: EIA, AESO, NGTL &nbsp;·&nbsp; Generated {{ generated_at }}</div>
   </div>
 
   <div class="sentiment-bar">
@@ -174,6 +174,13 @@
       <div class="name">NGTL {{ ngtl_area }}</div>
       <div class="val neutral">{{ "%.0f"|format(ngtl_util_pct) }}%</div>
       <div class="sub neutral">of authorized capability</div>
+    </div>
+    {% endif %}
+    {% if aeco_price_today %}
+    <div class="stat">
+      <div class="name">AECO-C</div>
+      <div class="val neutral">${{ "%.2f"|format(aeco_price_today) }}</div>
+      <div class="sub neutral">CAD/GJ, Alberta benchmark</div>
     </div>
     {% endif %}
   </div>

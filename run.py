@@ -27,6 +27,7 @@ except Exception:
 from fetch_eia import fetch_all
 from fetch_aeso import fetch_pool_price
 from fetch_ngtl import fetch_capability
+from fetch_aeco import fetch_aeco_price
 from narrative import generate_narrative
 
 
@@ -75,6 +76,13 @@ def mock_data() -> dict:
                 "Capability Authorized %": [88.0, 92.0, 97.0, 81.0],
             }
         ),
+        # Synthetic AECO data so the tile/signal can be visually checked in
+        # --mock mode even without a paid subscription. Live runs without
+        # AECO_API_KEY/AECO_API_URL configured will just skip this entirely.
+        "aeco": pd.DataFrame(
+            {"aeco_price_cad_gj": [1.62, 1.58, 1.55, 1.61, 1.59]},
+            index=pd.date_range(end=pd.Timestamp.today(), periods=5, freq="B"),
+        ),
     }
 
 
@@ -122,6 +130,7 @@ def main():
         data = fetch_all()
         data["aeso"] = fetch_pool_price(days=14)
         data["ngtl"] = fetch_capability()
+        data["aeco"] = fetch_aeco_price(days=14)  # no-op unless AECO_API_KEY/AECO_API_URL are set
 
     # Generate narrative
     print("Generating narrative...\n")

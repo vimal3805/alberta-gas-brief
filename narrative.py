@@ -26,6 +26,7 @@ RIG_CHANGE_NOTABLE    = 5      # rig count change to mention
 LNG_CHANGE_NOTABLE    = 1.0    # Bcf change in LNG exports worth mentioning
 AESO_PRICE_CHANGE_NOTABLE_PCT = 25.0   # day-over-day % move in AB pool price worth flagging
 NGTL_UTIL_TIGHT_PCT   = 95.0   # NGTL area utilization considered "constrained"
+AECO_CHANGE_NOTABLE_PCT = 8.0   # day-over-day % move in AECO worth flagging (real gas benchmark, lower bar than AESO power)
 
 
 @dataclass
@@ -56,6 +57,8 @@ class MarketSnapshot:
     aeso_price_prev: Optional[float]
     ngtl_area: Optional[str]
     ngtl_util_pct: Optional[float]
+    aeco_price_today: Optional[float]
+    aeco_price_prev: Optional[float]
 
 
 def build_snapshot(data: dict) -> MarketSnapshot:
@@ -98,6 +101,11 @@ def build_snapshot(data: dict) -> MarketSnapshot:
     ngtl_area     = ngtl_summary["area"] if ngtl_summary else None
     ngtl_util_pct = ngtl_summary["value_pct"] if ngtl_summary else None
 
+    # AECO (optional, paid-subscription plug-in — see fetch_aeco.py)
+    aeco = data.get("aeco", pd.DataFrame()).dropna() if "aeco" in data else pd.DataFrame()
+    aeco_price_today = float(aeco["aeco_price_cad_gj"].iloc[-1]) if not aeco.empty else None
+    aeco_price_prev  = float(aeco["aeco_price_cad_gj"].iloc[-2]) if (not aeco.empty and len(aeco) > 1) else None
+
     return MarketSnapshot(
         date             = hh.index[-1].strftime("%A, %B %d, %Y"),
         price_today      = price_today,
@@ -117,6 +125,8 @@ def build_snapshot(data: dict) -> MarketSnapshot:
         aeso_price_prev  = aeso_price_prev,
         ngtl_area        = ngtl_area,
         ngtl_util_pct    = ngtl_util_pct,
+        aeco_price_today = aeco_price_today,
+        aeco_price_prev  = aeco_price_prev,
     )
 
 
@@ -273,6 +283,29 @@ def _classify_ngtl(s: MarketSnapshot) -> Optional[Signal]:
     return None
 
 
+def _classify_aeco(s: MarketSnapshot) -> Optional[Signal]:
+    """
+    AECO-C/NIT is the actual Alberta gas benchmark (paid-subscription
+    plug-in — see fetch_aeco.py). Unlike the AESO power-price signal,
+    this IS the real regional gas price, so it's weighted "moderate" —
+    same tier as the LNG signal — rather than "weak".
+    """
+    if s.aeco_price_today is None or s.aeco_price_prev is None or s.aeco_price_prev == 0:
+        return None
+    change_pct = (s.aeco_price_today - s.aeco_price_prev) / s.aeco_price_prev * 100
+    if abs(change_pct) < AECO_CHANGE_NOTABLE_PCT:
+        return None
+    direction = "bullish" if change_pct > 0 else "bearish"
+    verb = "rose" if change_pct > 0 else "fell"
+    return Signal(
+        name="aeco", direction=direction, magnitude="moderate",
+        sentence=(
+            f"AECO-C {verb} {abs(change_pct):.1f}% day-over-day to ${s.aeco_price_today:.2f}/GJ, "
+            f"{'reflecting tighter Alberta basis' if change_pct > 0 else 'reflecting continued Alberta basis weakness'}."
+        )
+    )
+
+
 def _overall_sentiment(signals: list[Signal]) -> str:
     """Score signals and return overall market tone."""
     score = 0
@@ -362,6 +395,7 @@ def generate_narrative(data: dict) -> dict:
         _classify_rigs(s),
         _classify_power_price(s),
         _classify_ngtl(s),
+        _classify_aeco(s),
     ] if sig is not None]
 
     sentiment = _overall_sentiment(signals)
@@ -399,6 +433,7 @@ def generate_narrative(data: dict) -> dict:
         "aeso_price_today": s.aeso_price_today,
         "ngtl_area": s.ngtl_area,
         "ngtl_util_pct": s.ngtl_util_pct,
+        "aeco_price_today": s.aeco_price_today,
         "sentiment": sentiment,
         "sentiment_emoji": sentiment_emoji,
         "signals": signals,

@@ -47,6 +47,11 @@ jobs:
         env:
           EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
           AESO_API_KEY: ${{ secrets.AESO_API_KEY }}
+          # Optional — only needed if you have a paid NGI/ICE NGX AECO
+          # subscription. Safe to leave unset: fetch_aeco.py no-ops
+          # cleanly without these, no effect on anyone without a key.
+          AECO_API_KEY: ${{ secrets.AECO_API_KEY }}
+          AECO_API_URL: ${{ secrets.AECO_API_URL }}
         run: python run.py
 
       - name: Commit brief back to repo
