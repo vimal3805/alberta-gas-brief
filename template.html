@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alberta Gas Morning Brief — {{ date }}</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e8eaf0;
+    --muted: #8b8fa8;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #eab308;
+    --blue: #3b82f6;
+    --accent: #6366f1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 24px 16px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  /* Header */
+  .header { margin-bottom: 28px; }
+  .header .label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .header .subtitle { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* Sentiment bar */
+  .sentiment-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid {{ sentiment_color }};
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+  }
+  .sentiment-bar .emoji { font-size: 20px; }
+  .sentiment-bar .label { font-size: 13px; color: var(--muted); }
+  .sentiment-bar .value { font-size: 16px; font-weight: 600; color: {{ sentiment_color }}; text-transform: capitalize; }
+
+  /* Stats grid */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .stat .name { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .stat .val { font-size: 22px; font-weight: 700; }
+  .stat .sub { font-size: 12px; margin-top: 3px; }
+  .up { color: var(--green); }
+  .down { color: var(--red); }
+  .neutral { color: var(--muted); }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .card p { color: var(--text); line-height: 1.7; }
+
+  /* Watch item */
+  .watch {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .watch h2 {
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--blue); margin-bottom: 8px;
+  }
+
+  /* Signal pills */
+  .signals { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .pill {
+    font-size: 12px; font-weight: 500;
+    padding: 4px 12px; border-radius: 20px;
+    border: 1px solid;
+  }
+  .pill.bullish  { color: var(--green); border-color: var(--green); background: rgba(34,197,94,0.08); }
+  .pill.bearish  { color: var(--red);   border-color: var(--red);   background: rgba(239,68,68,0.08); }
+  .pill.neutral  { color: var(--muted); border-color: var(--border); background: transparent; }
+
+  /* Footer */
+  .footer { font-size: 12px; color: var(--muted); margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="label">Alberta Gas Market Intelligence</div>
+    <h1>Morning Brief</h1>
+    <div class="subtitle">{{ date }} &nbsp;·&nbsp; Data: EIA, AESO, AER &nbsp;·&nbsp; Generated {{ generated_at }}</div>
+  </div>
+
+  <div class="sentiment-bar">
+    <span class="emoji">{{ sentiment_emoji }}</span>
+    <div>
+      <div class="label">Overall Market Tone</div>
+      <div class="value">{{ sentiment }}</div>
+    </div>
+  </div>
+
+  <!-- Key Numbers -->
+  <div class="stats">
+    <div class="stat">
+      <div class="name">Henry Hub</div>
+      <div class="val {{ price_class }}">${{ "%.2f"|format(price_today) }}</div>
+      <div class="sub {{ price_class }}">{{ "%+.2f"|format(price_change) }} ({{ "%+.1f"|format(price_change_pct) }}%) today</div>
+    </div>
+    <div class="stat">
+      <div class="name">30-Day Avg</div>
+      <div class="val neutral">${{ "%.2f"|format(price_30d_avg) }}</div>
+      <div class="sub neutral">USD/MMBtu</div>
+    </div>
+    <div class="stat">
+      <div class="name">US Storage</div>
+      <div class="val {{ storage_class }}">{{ "%.0f"|format(storage_bcf) }} Bcf</div>
+      <div class="sub {{ storage_class }}">{{ "%+.0f"|format(storage_surplus_bcf) }} Bcf vs 5yr avg ({{ "%+.1f"|format(storage_surplus_pct) }}%)</div>
+    </div>
+    {% if gas_rigs %}
+    <div class="stat">
+      <div class="name">Gas Rigs</div>
+      <div class="val neutral">{{ gas_rigs }}</div>
+      <div class="sub neutral">US gas-directed rigs</div>
+    </div>
+    {% endif %}
+    {% if aeso_price_today %}
+    <div class="stat">
+      <div class="name">AESO Pool Price</div>
+      <div class="val neutral">${{ "%.2f"|format(aeso_price_today) }}</div>
+      <div class="sub neutral">CAD/MWh, Alberta</div>
+    </div>
+    {% endif %}
+    {% if ngtl_util_pct %}
+    <div class="stat">
+      <div class="name">NGTL {{ ngtl_area }}</div>
+      <div class="val neutral">{{ "%.0f"|format(ngtl_util_pct) }}%</div>
+      <div class="sub neutral">of authorized capability</div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Signal pills -->
+  <div class="signals">
+    {% for sig in signals %}
+    <span class="pill {{ sig.direction }}">{{ sig.name | title }} — {{ sig.direction }}</span>
+    {% endfor %}
+  </div>
+
+  <!-- Causal narrative -->
+  <div class="card">
+    <h2>Why Prices Moved</h2>
+    <p>{{ causal_paragraph }}</p>
+  </div>
+
+  <!-- Watch item -->
+  <div class="watch">
+    <h2>One Thing to Watch Today</h2>
+    <p>{{ watch_item }}</p>
+  </div>
+
+  <!-- Signal breakdown -->
+  <div class="card">
+    <h2>Signal Breakdown</h2>
+    {% for sig in signals %}
+    <p style="margin-bottom: 8px;">
+      <span class="{{ sig.direction }}" style="font-weight:600;">{{ sig.name | title }}:</span>
+      {{ sig.sentence }}
+    </p>
+    {% endfor %}
+  </div>
+
+  <div class="footer">
+    Sources: <a href="https://www.eia.gov/opendata/">EIA Open Data</a> &nbsp;·&nbsp;
+    <a href="https://www.aeso.ca/market/market-and-system-reporting/">AESO Market Reporting</a> &nbsp;·&nbsp;
+    <a href="https://www.aer.ca">AER ST98</a>
+    <br><br>
+    This brief is generated automatically from public data sources.
+    It is for informational and educational purposes only — not investment advice.
+    All data subject to revision by source agencies.
+  </div>
+
+</div>
+</body>
+</html>
