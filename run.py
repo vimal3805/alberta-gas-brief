@@ -16,6 +16,14 @@ from datetime import datetime
 from jinja2 import Template
 from pathlib import Path
 
+# Windows consoles default to cp1252, which can't print the emoji used in
+# console output (sentiment markers, watch-item icons). Force UTF-8 so this
+# runs the same on Windows, macOS/Linux, and GitHub Actions.
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 from fetch_eia import fetch_all
 from fetch_aeso import fetch_pool_price
 from fetch_ngtl import fetch_capability
@@ -72,7 +80,7 @@ def mock_data() -> dict:
 
 def render_html(brief: dict) -> str:
     template_path = Path(__file__).parent / "template.html"
-    template_str = template_path.read_text()
+    template_str = template_path.read_text(encoding="utf-8")
     tmpl = Template(template_str)
 
     # Derive display helpers
@@ -133,7 +141,7 @@ def main():
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     html = render_html(brief)
-    out_path.write_text(html)
+    out_path.write_text(html, encoding="utf-8")
     print(f"\n✅ Brief saved to: {out_path.resolve()}")
     print("   Open this file in your browser to see the full formatted brief.\n")
 

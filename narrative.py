@@ -203,6 +203,12 @@ def _classify_lng(s: MarketSnapshot) -> Optional[Signal]:
 
 
 def _classify_rigs(s: MarketSnapshot) -> Optional[Signal]:
+    """
+    NOTE: EIA's open API only exposes gas rig count monthly (no weekly Baker
+    Hughes feed is available through it), and it runs a few months behind
+    the calendar date — see fetch_eia.py's fetch_rig_count() for detail.
+    So this is a month-over-month comparison, not week-over-week.
+    """
     if s.gas_rigs is None or s.gas_rigs_prev is None:
         return None
     change = s.gas_rigs - s.gas_rigs_prev
@@ -214,7 +220,7 @@ def _classify_rigs(s: MarketSnapshot) -> Optional[Signal]:
     return Signal(
         name="rigs", direction=direction, magnitude="weak",
         sentence=(
-            f"The US gas-directed rig count {verb} by {abs(change)} rigs week-over-week "
+            f"The US gas-directed rig count {verb} by {abs(change)} rigs month-over-month "
             f"to {s.gas_rigs} rigs, {implication}."
         )
     )
@@ -321,12 +327,6 @@ def _watch_item(s: MarketSnapshot, signals: list[Signal]) -> str:
             "(8:30am MT). Expect price volatility at release. "
             f"Market consensus is roughly {s.storage_avg_bcf:.0f} Bcf — "
             "a significant miss either way will move prompt prices."
-        )
-    elif dow == 4:
-        return (
-            "📅 Baker Hughes Rig Count releases this afternoon (~1:00pm ET / 11:00am MT). "
-            "Watch for any acceleration in gas-directed drilling — "
-            "sustained increases above 130 rigs historically signal rising future supply."
         )
     else:
         dominant = max(signals, key=lambda x: {"strong": 3, "moderate": 2, "weak": 1}.get(x.magnitude, 1))
