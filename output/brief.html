@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alberta Gas Morning Brief — Monday, June 15, 2026</title>
+<title>Alberta Gas Morning Brief — Monday, June 29, 2026</title>
 <style>
   :root {
     --bg: #0f1117;
@@ -48,14 +48,14 @@
     gap: 10px;
     background: var(--card);
     border: 1px solid var(--border);
-    border-left: 4px solid #84cc16;
+    border-left: 4px solid #6b7280;
     border-radius: 8px;
     padding: 14px 18px;
     margin-bottom: 20px;
   }
   .sentiment-bar .emoji { font-size: 20px; }
   .sentiment-bar .label { font-size: 13px; color: var(--muted); }
-  .sentiment-bar .value { font-size: 16px; font-weight: 600; color: #84cc16; text-transform: capitalize; }
+  .sentiment-bar .value { font-size: 16px; font-weight: 600; color: #6b7280; text-transform: capitalize; }
 
   /* Stats grid */
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
@@ -127,14 +127,14 @@
   <div class="header">
     <div class="label">Alberta Gas Market Intelligence</div>
     <h1>Morning Brief</h1>
-    <div class="subtitle">EIA data as of Monday, June 15, 2026 &nbsp;·&nbsp; Data: EIA, AESO, NGTL &nbsp;·&nbsp; Generated 19:55 MT</div>
+    <div class="subtitle">EIA data as of Monday, June 29, 2026 &nbsp;·&nbsp; Data: EIA, AESO, NGTL &nbsp;·&nbsp; Generated 12:59 MT</div>
   </div>
 
   <div class="sentiment-bar">
-    <span class="emoji">🟡</span>
+    <span class="emoji">⚪</span>
     <div>
       <div class="label">Overall Market Tone</div>
-      <div class="value">mildly bullish</div>
+      <div class="value">mixed</div>
     </div>
   </div>
 
@@ -142,18 +142,18 @@
   <div class="stats">
     <div class="stat">
       <div class="name">Henry Hub</div>
-      <div class="val neutral">$3.06</div>
-      <div class="sub neutral">+0.00 (+0.0%) today</div>
+      <div class="val up">$3.33</div>
+      <div class="sub up">+0.07 (+2.1%) today</div>
     </div>
     <div class="stat">
       <div class="name">30-Day Avg</div>
-      <div class="val neutral">$3.08</div>
+      <div class="val neutral">$3.14</div>
       <div class="sub neutral">USD/MMBtu</div>
     </div>
     <div class="stat">
       <div class="name">US Storage</div>
-      <div class="val neutral">2759 Bcf</div>
-      <div class="sub neutral">+73 Bcf vs 5yr avg (+2.7%)</div>
+      <div class="val neutral">2922 Bcf</div>
+      <div class="sub neutral">+102 Bcf vs 5yr avg (+3.6%)</div>
     </div>
     
     <div class="stat">
@@ -165,7 +165,7 @@
     
     <div class="stat">
       <div class="name">AESO Pool Price</div>
-      <div class="val neutral">$10.91</div>
+      <div class="val neutral">$18.59</div>
       <div class="sub neutral">CAD/MWh, Alberta</div>
     </div>
     
@@ -178,18 +178,20 @@
     
     <span class="pill neutral">Storage — neutral</span>
     
-    <span class="pill neutral">Trend — neutral</span>
+    <span class="pill bullish">Trend — bullish</span>
     
-    <span class="pill bullish">Lng — bullish</span>
+    <span class="pill bearish">Lng — bearish</span>
     
     <span class="pill bearish">Rigs — bearish</span>
+    
+    <span class="pill bullish">Power — bullish</span>
     
   </div>
 
   <!-- Causal narrative -->
   <div class="card">
     <h2>Why Prices Moved</h2>
-    <p>Henry Hub was essentially flat at $3.06/MMBtu on Monday, June 15, 2026, a move of just +0.000/MMBtu (+0.0%) from the prior session. US storage at 2759 Bcf is near the 5-year average (2686 Bcf), providing little directional signal. The prompt price of $3.06/MMBtu is near its 30-day average of $3.08, suggesting range-bound conditions. US LNG export volumes rose by 79.9 Bcf month-over-month to 573.5 Bcf, drawing more gas away from domestic supply. The US gas-directed rig count increased by 10 rigs month-over-month to 133 rigs, pointing to rising future supply. Signals are pulling in opposite directions — the market is in a wait-and-see mode ahead of the next major data release.</p>
+    <p>Henry Hub rose 0.07/MMBtu (+2.1%) to $3.33/MMBtu on Monday, June 29, 2026. US storage at 2922 Bcf is near the 5-year average (2820 Bcf), providing little directional signal. At $3.33/MMBtu, the prompt price is $0.19 above its 30-day average of $3.14, reflecting a broader upward trend. US LNG export volumes fell by 35.5 Bcf month-over-month to 537.9 Bcf, freeing more gas for domestic markets. The US gas-directed rig count increased by 10 rigs month-over-month to 133 rigs, pointing to rising future supply. Alberta's AESO pool price spiked 82% day-over-day to $18.59/MWh, pointing to stronger gas-fired generation demand within Alberta. Signals are pulling in opposite directions — the market is in a wait-and-see mode ahead of the next major data release.</p>
   </div>
 
   <!-- Watch item -->
@@ -204,22 +206,27 @@
     
     <p style="margin-bottom: 8px;">
       <span class="neutral" style="font-weight:600;">Storage:</span>
-      US storage at 2759 Bcf is near the 5-year average (2686 Bcf), providing little directional signal.
+      US storage at 2922 Bcf is near the 5-year average (2820 Bcf), providing little directional signal.
     </p>
     
     <p style="margin-bottom: 8px;">
-      <span class="neutral" style="font-weight:600;">Trend:</span>
-      The prompt price of $3.06/MMBtu is near its 30-day average of $3.08, suggesting range-bound conditions.
+      <span class="bullish" style="font-weight:600;">Trend:</span>
+      At $3.33/MMBtu, the prompt price is $0.19 above its 30-day average of $3.14, reflecting a broader upward trend.
     </p>
     
     <p style="margin-bottom: 8px;">
-      <span class="bullish" style="font-weight:600;">Lng:</span>
-      US LNG export volumes rose by 79.9 Bcf month-over-month to 573.5 Bcf, drawing more gas away from domestic supply.
+      <span class="bearish" style="font-weight:600;">Lng:</span>
+      US LNG export volumes fell by 35.5 Bcf month-over-month to 537.9 Bcf, freeing more gas for domestic markets.
     </p>
     
     <p style="margin-bottom: 8px;">
       <span class="bearish" style="font-weight:600;">Rigs:</span>
       The US gas-directed rig count increased by 10 rigs month-over-month to 133 rigs, pointing to rising future supply.
+    </p>
+    
+    <p style="margin-bottom: 8px;">
+      <span class="bullish" style="font-weight:600;">Power:</span>
+      Alberta's AESO pool price spiked 82% day-over-day to $18.59/MWh, pointing to stronger gas-fired generation demand within Alberta.
     </p>
     
   </div>
