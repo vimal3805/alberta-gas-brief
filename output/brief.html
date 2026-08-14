@@ -48,14 +48,14 @@
     gap: 10px;
     background: var(--card);
     border: 1px solid var(--border);
-    border-left: 4px solid #f97316;
+    border-left: 4px solid #ef4444;
     border-radius: 8px;
     padding: 14px 18px;
     margin-bottom: 20px;
   }
   .sentiment-bar .emoji { font-size: 20px; }
   .sentiment-bar .label { font-size: 13px; color: var(--muted); }
-  .sentiment-bar .value { font-size: 16px; font-weight: 600; color: #f97316; text-transform: capitalize; }
+  .sentiment-bar .value { font-size: 16px; font-weight: 600; color: #ef4444; text-transform: capitalize; }
 
   /* Stats grid */
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
@@ -127,14 +127,14 @@
   <div class="header">
     <div class="label">Alberta Gas Market Intelligence</div>
     <h1>Morning Brief</h1>
-    <div class="subtitle">EIA data as of Tuesday, August 11, 2026 &nbsp;·&nbsp; Data: EIA, AESO, NGTL &nbsp;·&nbsp; Generated 12:44 MT</div>
+    <div class="subtitle">EIA data as of Tuesday, August 11, 2026 &nbsp;·&nbsp; Data: EIA, AESO, NGTL &nbsp;·&nbsp; Generated 12:40 MT</div>
   </div>
 
   <div class="sentiment-bar">
-    <span class="emoji">🟡</span>
+    <span class="emoji">🔴</span>
     <div>
       <div class="label">Overall Market Tone</div>
-      <div class="value">mildly bearish</div>
+      <div class="value">bearish</div>
     </div>
   </div>
 
@@ -152,8 +152,8 @@
     </div>
     <div class="stat">
       <div class="name">US Storage</div>
-      <div class="val neutral">3117 Bcf</div>
-      <div class="sub neutral">+134 Bcf vs 5yr avg (+4.5%)</div>
+      <div class="val neutral">3153 Bcf</div>
+      <div class="sub neutral">+144 Bcf vs 5yr avg (+4.8%)</div>
     </div>
     
     <div class="stat">
@@ -165,7 +165,7 @@
     
     <div class="stat">
       <div class="name">AESO Pool Price</div>
-      <div class="val neutral">$42.02</div>
+      <div class="val neutral">$23.60</div>
       <div class="sub neutral">CAD/MWh, Alberta</div>
     </div>
     
@@ -184,20 +184,20 @@
     
     <span class="pill bearish">Rigs — bearish</span>
     
-    <span class="pill bullish">Power — bullish</span>
+    <span class="pill bearish">Power — bearish</span>
     
   </div>
 
   <!-- Causal narrative -->
   <div class="card">
     <h2>Why Prices Moved</h2>
-    <p>Henry Hub rose 0.07/MMBtu (+2.6%) to $2.79/MMBtu on Tuesday, August 11, 2026. US storage at 3117 Bcf is near the 5-year average (2983 Bcf), providing little directional signal. The prompt price of $2.79/MMBtu is near its 30-day average of $2.74, suggesting range-bound conditions. US LNG export volumes fell by 35.1 Bcf month-over-month to 502.8 Bcf, freeing more gas for domestic markets. The US gas-directed rig count increased by 10 rigs month-over-month to 133 rigs, pointing to rising future supply. Alberta's AESO pool price spiked 32% day-over-day to $42.02/MWh, pointing to stronger gas-fired generation demand within Alberta. Taken together, the weight of evidence points to continued bearish pressure on the near-term curve.</p>
+    <p>Henry Hub rose 0.07/MMBtu (+2.6%) to $2.79/MMBtu on Tuesday, August 11, 2026. US storage at 3153 Bcf is near the 5-year average (3008 Bcf), providing little directional signal. The prompt price of $2.79/MMBtu is near its 30-day average of $2.74, suggesting range-bound conditions. US LNG export volumes fell by 35.1 Bcf month-over-month to 502.8 Bcf, freeing more gas for domestic markets. The US gas-directed rig count increased by 10 rigs month-over-month to 133 rigs, pointing to rising future supply. Alberta's AESO pool price dropped 43% day-over-day to $23.60/MWh, easing in-province gas-fired generation demand. Taken together, the weight of evidence points to continued bearish pressure on the near-term curve.</p>
   </div>
 
   <!-- Watch item -->
   <div class="watch">
     <h2>One Thing to Watch Today</h2>
-    <p>📅 EIA Natural Gas Storage Report drops this morning at 10:30am ET (8:30am MT). Expect price volatility at release. Market consensus is roughly 2983 Bcf — a significant miss either way will move prompt prices.</p>
+    <p>👀 Storage surplus remains the dominant bearish overhang. Watch for any demand surprise (cold snap, LNG outage) that could offset.</p>
   </div>
 
   <!-- Signal breakdown -->
@@ -206,7 +206,7 @@
     
     <p style="margin-bottom: 8px;">
       <span class="neutral" style="font-weight:600;">Storage:</span>
-      US storage at 3117 Bcf is near the 5-year average (2983 Bcf), providing little directional signal.
+      US storage at 3153 Bcf is near the 5-year average (3008 Bcf), providing little directional signal.
     </p>
     
     <p style="margin-bottom: 8px;">
@@ -225,8 +225,8 @@
     </p>
     
     <p style="margin-bottom: 8px;">
-      <span class="bullish" style="font-weight:600;">Power:</span>
-      Alberta's AESO pool price spiked 32% day-over-day to $42.02/MWh, pointing to stronger gas-fired generation demand within Alberta.
+      <span class="bearish" style="font-weight:600;">Power:</span>
+      Alberta's AESO pool price dropped 43% day-over-day to $23.60/MWh, easing in-province gas-fired generation demand.
     </p>
     
   </div>
